@@ -8,12 +8,20 @@ use Modulate\Artisan\Interceptor\OptionBuilder;
 
 class ArtisanInterceptor extends Facade 
 {
+    /**
+     * @inheritDoc
+     */
     protected static function getFacadeAccessor() 
     {
         return Interceptor::class; 
     }
 
-    public static function optionBuilder()
+    /**
+     * Shortcut for getting an instance of the option builder
+     *
+     * @return OptionBuilder
+     */
+    public static function optionBuilder(): OptionBuilder
     {
         return app()->make(OptionBuilder::class);
     }

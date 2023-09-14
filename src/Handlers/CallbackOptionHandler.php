@@ -25,6 +25,11 @@ class CallbackOptionHandler implements OptionHandler
      */
     protected $app;
 
+    /**
+     *
+     * @param string $option
+     * @param callable|null $callable
+     */
     public function __construct(
         string $option,
         callable $callable = null,
@@ -39,6 +44,7 @@ class CallbackOptionHandler implements OptionHandler
         return $this;
     }
 
+
     public function setOption($option): OptionHandler
     {
         $this->option = $option;
@@ -46,6 +52,13 @@ class CallbackOptionHandler implements OptionHandler
         return $this;
     }
 
+    /**
+     * Check to see if the required option is present and has a value
+     * If false is returned then the callback is not executed
+     *
+     * @param InterceptedCommand $intercepted
+     * @return boolean
+     */
     public function check(InterceptedCommand $intercepted): bool
     {
         if (
@@ -58,7 +71,13 @@ class CallbackOptionHandler implements OptionHandler
 
     }
 
-    public function handle(InterceptedCommand|Application $intercepted): void
+    /**
+     * The handle function will execute the stored closure
+     *
+     * @param InterceptedCommand $intercepted
+     * @return void
+     */
+    public function handle(InterceptedCommand $intercepted): void
     {
         if ($this->callable) {
             call_user_func($this->callable, $intercepted);

@@ -9,16 +9,12 @@ use Symfony\Component\Console\Application;
 
 interface OptionHandler extends Handler
 {
-    public function setOption($option);
-
     /**
-     * The check option is called when the handler is pulled from the stack to
-     * determine if this handler should be executed. This allows selective
-     * control over whether or not to run the handler based on the command
-     * input
+     * Set the option that is required to be checked
      *
-     * @param InputInterface $input The input from the artisan command
-     * @return boolean
+     * @param string $option
+     * @return OptionHandler
      */
+    public function setOption(string $option): OptionHandler;
 }
 
