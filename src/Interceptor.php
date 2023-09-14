@@ -13,7 +13,7 @@ use Modulate\Artisan\Interceptor\Handlers\CallbackOptionHandler;
 use Symfony\Component\Console\Application;
 
 use Illuminate\Support\Arr;
-
+use Modulate\Artisan\Interceptor\Handlers\ArtisanCallbackHandler;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
@@ -72,7 +72,7 @@ class Interceptor implements InterceptorContract
      * @param string $option
      * @return InterceptorContract
      */
-    public function addHandler(HandlerContract $handler, StackType $stack = StackType::before, string $option = null): InterceptorContract
+    public function addHandler(HandlerContract|ArtisanHandler $handler, StackType $stack = StackType::before, string $option = null): InterceptorContract
     {
         if ($handler instanceof OptionHandlerContract) {
             $handler->setOption($option);
@@ -94,8 +94,7 @@ class Interceptor implements InterceptorContract
     {
         $handler = $callable;
         if (is_callable($callable)) {
-            $class = CallbackHandler::class;
-            $handler = new CallbackHandler($callable);
+            $handler = new ArtisanCallbackHandler($callable);
         }
 
         $this->addHandler($handler, StackType::start);
@@ -113,8 +112,7 @@ class Interceptor implements InterceptorContract
     public function before(callable|HandlerContract $callable, string $option = null): InterceptorContract
     {
         $handler = $callable;
-        if (is_callable($callable)){
-            $class = CallbackHandler::class;
+        if (is_callable($callable)) {
             if ($option) {
                 $handler = new CallbackOptionHandler(
                     $option,
@@ -140,8 +138,7 @@ class Interceptor implements InterceptorContract
     public function after(callable|HandlerContract $callable, $option = null): InterceptorContract
     {
         $handler = $callable;
-        if (is_callable($callable)){
-            $class = CallbackHandler::class;
+        if (is_callable($callable)) {
             if ($option) {
                 $handler = new CallbackOptionHandler(
                     $option,
@@ -279,6 +276,12 @@ class Interceptor implements InterceptorContract
         $this->handle($intercepted, StackType::before);
     }
 
+    /**
+     * The handleAfter method is called once the CommandFinished event
+     *
+     * @param InterceptedCommand $intercepted
+     * @return void
+     */
     public function handleAfter(InterceptedCommand $intercepted): void
     {
         $this->handle($intercepted, StackType::after);
