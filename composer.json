@@ -1,0 +1,56 @@
+{
+    "name": "modulate/artisan-interceptor",
+    "description": "Allows you to add options, listeners and handlers to artisan commands",
+    "type": "library",
+    "require": {
+        "php": "^8.0",
+        "illuminate/contracts": "^10.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.0",
+        "nunomaduro/collision": "^7.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Modulate\\Artisan\\Interceptor\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Justin Lloyd",
+            "email": "jlloyd_07@hotmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modulate\\Artisan\\Interceptor\\Providers\\InterceptorServiceProvider"
+            ],
+            "aliases": {
+                "ArtisanInterceptor": "Modulate\\Artisan\\Interceptor\\Facades\\ArtisanInterceptor"
+            }
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/",
+            "Workbench\\App\\": "workbench/app/",
+            "Workbench\\Database\\Factories\\": "workbench/database/factories/",
+            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@clear",
+            "@prepare"
+        ],
+        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
+        "prepare": "@php vendor/bin/testbench package:discover --ansi",
+        "build": "@php vendor/bin/testbench workbench:build --ansi",
+        "serve": [
+            "@build",
+            "@php vendor/bin/testbench serve"
+        ]
+    }
+}
