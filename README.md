@@ -3,7 +3,7 @@
 
 ## Features
 
-- Add new global options to artisan e.g. --tennant=2 or --module=my-module
+- Add new global options to artisan e.g. --tenant=2 or --module=my-module
 - Add handlers to be executed before and/or after an artisan command is run
 - Add conditional handlers than only run when a specified option is given to a command
 - Fluent builder for adding input options to artisan
