@@ -8,26 +8,56 @@
 - Add conditional handlers than only run when a specified option is given to a command
 - Fluent builder for adding input options to artisan
 
-## Usage
-```php
-<?php
-use Modulate\Artisan\Interceptor\InterceptedCommand;
+## Adding Global Options
+Generally speaking there is currently no easy way to add new global options to the artisan command. Options like --env or --version come built in
+but artisan doesn't expose a way for you to add new ones out of the box. This is where artisan interceptor comes in.
 
-// Add a new option to the console
+The interceptor allows you to add new global options to artisan and add your own custom handlers detect and process those options.
+This is all done using the built in artisan events but gives you a clean and elegant way of adding and interacting with new options
+
+## Usage
+
+### Adding Global Options
+```php
+// Add a new optional option to artisan
 ArtisanInterceptor::addOption(
     ArtisanInterceptor::optionBuilder()
         ->name('tenant')
         ->optional()
         ->get()
+);
+
+// Adding required options to the shell to handle things like authentication
+ArtisanInterceptor::addOption(
+    ArtisanInterceptor::optionBuilder()
+        ->name('user')
+        ->required()
+        ->get()
+);
+
+ArtisanInterceptor::addOption(
+    ArtisanInterceptor::optionBuilder()
+        ->name('password')
+        ->required()
+        ->get()
+);
+
+```
+
+### Adding Listeners
+```php
+<?php
+use Modulate\Artisan\Interceptor\InterceptedCommand;
+
 // Add a callback that runs before the command is run
 // but will only run if the given option is set
-)->before(function(InterceptedCommand $intercepted) {
+ArtisanInterceptor::before(function(InterceptedCommand $intercepted) {
     echo sprintf(
         'Hello from %s tenantId: %d', 
         $intercepted->getCommand(),
         $intercepted->getInput()->getOption('tenant')
     );
-// Add a callback that runs before the command is run
+// Add a callback that runs after the command is run
 // but will only run if the given option is set
 }, 'tenant')->after(function(InterceptedCommand $intercepted) {
     echo sprintf(
