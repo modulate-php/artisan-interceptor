@@ -12,11 +12,13 @@ use Modulate\Artisan\Interceptor\Handlers\CallbackHandler;
 use Modulate\Artisan\Interceptor\Handlers\CallbackOptionHandler;
 use Symfony\Component\Console\Application;
 
+use Illuminate\Support\Arr;
+
 use Symfony\Component\Console\Input\InputOption;
 
-
 /**
- * Undocumented class
+ * The interceptor implements the core logic of the package and is responsible for interacting with
+ * both the registered callbacks and the artisan instance
  */
 class Interceptor implements InterceptorContract
 {
@@ -49,11 +51,14 @@ class Interceptor implements InterceptorContract
      * @var bool
      */
     protected bool $started = false;
+    
 
     /**
-     * @param HandlerStackContract $stack
+     * @param HandlerStackContract $start
+     * @param HandlerStackContract $before
+     * @param HandlerStackContract $after
      */
-     public function __construct(HandlerStackContract $start, HandlerStackContract $before, HandlerStackContract $after)
+    public function __construct(HandlerStackContract $start, HandlerStackContract $before, HandlerStackContract $after)
     {
         $this->start  = $start;
         $this->before = $before;
@@ -79,6 +84,12 @@ class Interceptor implements InterceptorContract
         return $this;
     }
 
+   /**
+    * Add a handler or callable to run on artisan start
+    *
+    * @param callable|ArtisanHandler $callable
+    * @return InterceptorContract
+    */ 
     public function start(callable|ArtisanHandler $callable): InterceptorContract
     {
         $handler = $callable;
@@ -90,8 +101,15 @@ class Interceptor implements InterceptorContract
         $this->addHandler($handler, StackType::start);
 
         return $this;
-    }    
+    }
 
+    /**
+     * Add a handler or callable to run on before command starts
+     *
+     * @param callable|HandlerContract $callable
+     * @param string|null $option
+     * @return InterceptorContract
+     */
     public function before(callable|HandlerContract $callable, string $option = null): InterceptorContract
     {
         $handler = $callable;
@@ -111,6 +129,14 @@ class Interceptor implements InterceptorContract
 
         return $this;
     }
+
+    /**
+     * Add a handler or callable to run on after command finishes
+     *
+     * @param callable|HandlerContract $callable
+     * @param [type] $option
+     * @return InterceptorContract
+     */
     public function after(callable|HandlerContract $callable, $option = null): InterceptorContract
     {
         $handler = $callable;
@@ -152,6 +178,26 @@ class Interceptor implements InterceptorContract
     }
 
     /**
+     * Undocumented function
+     *
+     * @param InputOption[] $options
+     * @return Interceptor
+     */
+    public function addOptions(...$options): Interceptor
+    {
+        // Ensure we always have a single array of options
+        // regardless of if an array or list of options
+        // was passed through the method
+        $options = Arr::wrap($options[0]);
+
+        foreach ($options as $option) {
+            $this->addOption($option);
+        }
+
+        return $this;
+    }
+
+    /**
      * @internal
      * Called during the artisan boot process to inject the application into the handler
      * @param Application $app The symfony console application
@@ -162,7 +208,7 @@ class Interceptor implements InterceptorContract
     {
         $this->app = $app;
         foreach ($this->options as $option) {
-            
+
             $this->app->getDefinition()->addOption($option);
         }
 
@@ -199,12 +245,12 @@ class Interceptor implements InterceptorContract
 
     protected function handle(
         InterceptedCommand|Application $intercepted,
-        StackType $stackType, 
+        StackType $stackType,
     ) {
         $stack = $stackType->value;
         // Move the stack pointer back to the start
         $this->$stack->reset();
-        
+
         if (method_exists($intercepted, 'setArtisan')) {
             $intercepted->setArtisan($this->app);
         }
