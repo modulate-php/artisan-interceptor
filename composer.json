@@ -3,7 +3,7 @@
     "description": "Allows you to add options, listeners and handlers to artisan commands",
     "type": "library",
     "require": {
-        "php": "^8.0",
+        "php": "^8.1",
         "illuminate/contracts": "^10.0"
     },
     "require-dev": {
