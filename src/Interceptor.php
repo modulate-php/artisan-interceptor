@@ -28,19 +28,19 @@ class Interceptor implements InterceptorContract
     protected array $options = [];
 
     /**
-     * @var HandlerStack
+     * @var HandlerStackContract
      */
-    protected HandlerStack $start;
+    protected HandlerStackContract $start;
 
     /**
-     * @var HandlerStack
+     * @var HandlerStackContract
      */
-    protected HandlerStack $before;
+    protected HandlerStackContract $before;
 
     /**
-     * @var HandlerStack
+     * @var HandlerStackContract
      */
-    protected HandlerStack $after;
+    protected HandlerStackContract $after;
 
     /**
      * @var Application
@@ -69,7 +69,7 @@ class Interceptor implements InterceptorContract
      * Add a handler to the interceptor
      *
      * @param HandlerContract $handler
-     * @param string $option
+     * @param string|null $option
      * @return InterceptorContract
      */
     public function addHandler(HandlerContract|ArtisanHandler $handler, StackType $stack = StackType::before, string $option = null): InterceptorContract
@@ -132,10 +132,10 @@ class Interceptor implements InterceptorContract
      * Add a handler or callable to run on after command finishes
      *
      * @param callable|HandlerContract $callable
-     * @param [type] $option
+     * @param string $option
      * @return InterceptorContract
      */
-    public function after(callable|HandlerContract $callable, $option = null): InterceptorContract
+    public function after(callable|HandlerContract $callable, string $option = null): InterceptorContract
     {
         $handler = $callable;
         if (is_callable($callable)) {

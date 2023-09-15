@@ -17,7 +17,7 @@ interface Interceptor
 
     public function before(callable|Handler $callable, string $option = null): Interceptor;
 
-    public function after(callable|Handler $callable, $option = null): Interceptor;
+    public function after(callable|Handler $callable, string $option = null): Interceptor;
 
     public function handleStart(Application $artisan): void;
 

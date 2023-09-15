@@ -15,7 +15,7 @@ class InterceptedCommand
      * @var string
      */
     protected string $command;
-    
+
     /**
      * The artisan console instance
      *
@@ -114,7 +114,7 @@ class InterceptedCommand
      *
      * @return integer
      */
-    public function getExitCode(): int
+    public function getExitCode(): int|null
     {
         return $this->exitCode;
     }
