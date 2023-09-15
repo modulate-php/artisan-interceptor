@@ -94,7 +94,7 @@ class OptionBuilder
      */
     public function hasMode(int $mode): bool
     {
-        return $this->mode & $mode ? true : false;
+        return ($this->mode & $mode) ? true : false;
     }
 
     /**
