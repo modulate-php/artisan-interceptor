@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace Modulate\Artisan\Interceptor\Providers;
 
 use Illuminate\Support\ServiceProvider;

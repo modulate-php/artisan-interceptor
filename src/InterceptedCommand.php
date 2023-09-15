@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace Modulate\Artisan\Interceptor;
 
 use Symfony\Component\Console\Application;

@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace Modulate\Artisan\Interceptor;
 
 use Illuminate\Foundation\Exceptions\Handler;

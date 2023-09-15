@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace Modulate\Artisan\Interceptor\Handlers;
 
 use Modulate\Artisan\Interceptor\Contracts\Handler;
