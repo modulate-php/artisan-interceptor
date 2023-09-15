@@ -31,7 +31,7 @@ class InterceptorServiceProvider extends ServiceProvider
             $this->app->bind(HandlerStackContract::class, HandlerStack::class);
             $this->app->singleton(InterceptorContract::class, Interceptor::class);
 
-            $this->app->bind(OptionBuilder::class, function($app) {
+            $this->app->bind(OptionBuilder::class, function() {
                 return new OptionBuilder();
             });
         }
