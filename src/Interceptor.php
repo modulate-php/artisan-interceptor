@@ -15,6 +15,7 @@ use Symfony\Component\Console\Application;
 use Illuminate\Support\Arr;
 use Modulate\Artisan\Interceptor\Handlers\ArtisanCallbackHandler;
 use Symfony\Component\Console\Input\InputOption;
+use Illuminate\Support\Traits\Macroable;
 
 /**
  * The interceptor implements the core logic of the package and is responsible for interacting with
@@ -22,6 +23,8 @@ use Symfony\Component\Console\Input\InputOption;
  */
 class Interceptor implements InterceptorContract
 {
+    use Macroable;
+
     /**
      * @var InputOption[]
      */
@@ -84,12 +87,12 @@ class Interceptor implements InterceptorContract
         return $this;
     }
 
-   /**
-    * Add a handler or callable to run on artisan start
-    *
-    * @param callable|ArtisanHandler $callable
-    * @return InterceptorContract
-    */ 
+    /**
+     * Add a handler or callable to run on artisan start
+     *
+     * @param callable|ArtisanHandler $callable
+     * @return InterceptorContract
+     */
     public function start(callable|ArtisanHandler $callable): InterceptorContract
     {
         $handler = $callable;

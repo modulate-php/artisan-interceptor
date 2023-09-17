@@ -3,6 +3,7 @@ declare(strict_types=1);
 namespace Modulate\Artisan\Interceptor;
 
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
@@ -68,6 +69,11 @@ class InterceptedCommand
         return $this->command;
     }
 
+    public function getCommandInstance(): Command
+    {
+        return $this->getArtisan()->get($this->command);
+    }
+
     /**
      * Inject the artisan application into the intercepted command
      *
@@ -97,6 +103,28 @@ class InterceptedCommand
     public function getInput(): InputInterface
     {
         return $this->input;
+    }
+
+    /**
+     * Get an option from the command input
+     *
+     * @param string $name
+     * @return mixed
+     */
+    public function getOption(string $name): mixed
+    {
+        return $this->getInput()->getOption($name);
+    }
+
+    /**
+     * Get an argument from the command input
+     *
+     * @param string $name
+     * @return mixed
+     */
+    public function getArgument(string $name): mixed
+    {
+        return $this->getInput()->getArgument($name);
     }
 
     /**

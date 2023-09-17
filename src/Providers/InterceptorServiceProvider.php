@@ -7,11 +7,9 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Console\Events\ArtisanStarting;
 use Illuminate\Console\Events\CommandStarting;
 use Illuminate\Console\Events\CommandFinished;
-use Illuminate\Console\GeneratorCommand;
 use Illuminate\Support\Facades\Event;
 use Modulate\Artisan\Interceptor\Contracts\HandlerStack as HandlerStackContract;
 use Modulate\Artisan\Interceptor\InterceptedCommand;
-use Symfony\Component\Console\Input\InputOption;
 
 
 use Modulate\Artisan\Interceptor\Contracts\Interceptor as InterceptorContract;
