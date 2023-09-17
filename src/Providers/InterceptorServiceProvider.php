@@ -25,7 +25,10 @@ class InterceptorServiceProvider extends ServiceProvider
 
     public function register()
     {
-        if ($this->app->runningInConsole()) {
+        if (
+            $this->app->runningInConsole()
+            || $this->app->runningUnitTests()
+        ) {
             $this->app->bind(HandlerStackContract::class, HandlerStack::class);
             $this->app->singleton(InterceptorContract::class, Interceptor::class);
 
@@ -38,7 +41,10 @@ class InterceptorServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        if ($this->app->runningInConsole()) {
+        if (
+            $this->app->runningInConsole()
+            || $this->app->runningUnitTests()
+        ) {
             Event::listen(ArtisanStarting::class, function(ArtisanStarting $e) {
                 $this
                     ->app

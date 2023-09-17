@@ -46,6 +46,4 @@ interface HandlerStack
      * Remove all handlers from the stack
      */
     public function flush(): HandlerStack;
-
-
 }
