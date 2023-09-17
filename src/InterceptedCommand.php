@@ -117,6 +117,31 @@ class InterceptedCommand
     }
 
     /**
+     * Check if an input option exists
+     *
+     * @param string $name
+     * @return boolean
+     */
+    public function hasOption(string $name): bool
+    {
+        return $this->getInput()->hasOption($name);
+    }
+
+    /**
+     * Set an input option
+     *
+     * @param string $name
+     * @param mixed $value
+     * @return InterceptedCommand
+     */
+    public function setOption(string $name, mixed $value): InterceptedCommand
+    {
+        $this->getInput()->setOption($name, $value);
+
+        return $this;
+    }
+
+    /**
      * Get an argument from the command input
      *
      * @param string $name
@@ -125,6 +150,31 @@ class InterceptedCommand
     public function getArgument(string $name): mixed
     {
         return $this->getInput()->getArgument($name);
+    }
+
+    /**
+     * Check if an input argument exists
+     *
+     * @param string $name
+     * @return boolean
+     */
+    public function hasArgument(string $name): bool
+    {
+        return $this->getInput()->hasArgument($name);
+    }
+
+    /**
+     * Set an input argument
+     *
+     * @param string $name
+     * @param mixed $value
+     * @return InterceptedCommand
+     */
+    public function setArgument(string $name, mixed $value): InterceptedCommand
+    {
+        $this->getInput()->setArgument($name, $value);
+
+        return $this;
     }
 
     /**
