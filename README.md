@@ -1,6 +1,12 @@
 # Modulate Artisan Interceptor
 ### An easy but elegant way to change global behaviours of Artisan commands
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/modulate/artisan-interceptor.svg?style=flat-square)](https://packagist.org/packages/modulate/artisan-interceptor)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/modulate-php/artisan-interceptor/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/modulate-php/artisan-interceptor/?branch=main)
+[![Code Coverage](https://scrutinizer-ci.com/g/modulate-php/artisan-interceptor/badges/coverage.png?b=main)](https://scrutinizer-ci.com/g/modulate-php/artisan-interceptor/?branch=main)
+[![Build Status](https://scrutinizer-ci.com/g/modulate-php/artisan-interceptor/badges/build.png?b=main)](https://scrutinizer-ci.com/g/modulate-php/artisan-interceptor/build-status/main)
+[![Total Downloads](https://img.shields.io/packagist/dt/modulate/artisan-interceptor.svg?style=flat-square)](https://packagist.org/packages/modulate/artisan-interceptor)
+
 ## Features
 
 - Add new global options to artisan e.g. --tenant=2 or --module=my-module
