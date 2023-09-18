@@ -42,20 +42,16 @@ ArtisanInterceptor::addOption(
 );
 
 // Adding required options to the shell to handle things like authentication
-ArtisanInterceptor::addOption(
+ArtisanInterceptor::addOptions(
     ArtisanInterceptor::optionBuilder()
         ->name('user')
         ->required()
-        ->get()
-);
-
-ArtisanInterceptor::addOption(
+        ->get(),
     ArtisanInterceptor::optionBuilder()
         ->name('password')
         ->required()
         ->get()
 );
-
 ```
 
 ### Adding Listeners
@@ -63,25 +59,27 @@ ArtisanInterceptor::addOption(
 <?php
 use Modulate\Artisan\Interceptor\InterceptedCommand;
 
-// Add a callback that runs before the command is run
-// but will only run if the given option is set
 ArtisanInterceptor::before(function(InterceptedCommand $intercepted) {
-    echo sprintf(
+    // Add a callback that runs before the command is run
+    // but will only run if the given option is set
+    $intercepted->getOutput()->writeln(sprintf(
         'Hello from %s tenantId: %d', 
         $intercepted->getCommand(),
         $intercepted->getInput()->getOption('tenant')
-    );
-// Add a callback that runs after the command is run
-// but will only run if the given option is set
-}, 'tenant')->after(function(InterceptedCommand $intercepted) {
-    echo sprintf(
+    ));
+}, 'tenant')
+->after(function(InterceptedCommand $intercepted) {
+    // Add a callback that runs after the command is run
+    // but will only run if the given option is set
+    $intercepted->getOutput()->writeln(sprintf(
         'exitCode %d',
         $intercepted->getExitCode(),
-    );
-// You can also omit the option parameter to a before or after
-// callback to always run the callback
-}, 'tenant')->after(function(InterceptedCommand $intercepted) {
-    echo 'This callback will always run after a command';
+    ));
+}, 'tenant')
+->after(function(InterceptedCommand $intercepted) {
+    // You can also omit the option parameter to a before or after
+    // callback to always run the callback
+    $intercepted->getOutput()->writeln('This callback will always run after a command');
 });
 ```
 
