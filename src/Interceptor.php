@@ -54,7 +54,7 @@ class Interceptor implements InterceptorContract
      * @var bool
      */
     protected bool $started = false;
-    
+
 
     /**
      * @param HandlerStackContract $start

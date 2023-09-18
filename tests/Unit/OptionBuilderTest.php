@@ -23,8 +23,14 @@ class OptionBuilderTest extends TestCase
     {
         $inputOption = $this->builder
             ->name('foo')
+            ->required()
+            ->description('my new option')
+            ->default('bar')
             ->get();
         $this->assertInstanceOf(InputOption::class, $inputOption);
+        $this->assertEquals($inputOption->getName(), 'foo');
+        $this->assertEquals($inputOption->getDescription(), 'my new option');
+        $this->assertEquals($inputOption->getDefault(), 'bar');
     }
 
     public function test_flag(): void
@@ -40,10 +46,10 @@ class OptionBuilderTest extends TestCase
     {
         $inputOption = $this->builder
             ->name('foo')
-            ->optional()
-            ->get();
+            ->optional();
+        $this->assertTrue($inputOption->hasMode(InputOption::VALUE_OPTIONAL));
+        $inputOption = $inputOption->get();
         $this->assertFalse($inputOption->isValueRequired());
-
     }
     
     public function test_required(): void
@@ -79,15 +85,22 @@ class OptionBuilderTest extends TestCase
     public function test_throws_exception(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $inputOption = $this->builder
+        $this->builder
             ->name('foo')
             ->array()
             ->get();
         
         $this->expectException(InvalidArgumentException::class);
-        $inputOption = $this->builder
+        $this->builder
             ->name('foo')
             ->flag()
+            ->required()
+            ->get();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->builder
+            ->name('foo')
+            ->negatable()
             ->required()
             ->get();
     }
