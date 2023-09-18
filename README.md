@@ -15,6 +15,14 @@ but artisan doesn't expose a way for you to add new ones out of the box. This is
 The interceptor allows you to add new global options to artisan and add your own custom handlers detect and process those options.
 This is all done using the built in artisan events but gives you a clean and elegant way of adding and interacting with new options
 
+## Installation
+
+You can install the package via composer:
+
+```bash
+composer require modulate/artisan-interceptor
+```
+
 ## Usage
 
 ### Adding Global Options
@@ -76,3 +84,7 @@ You have full control of what the interceptor for all callback types.
 You can even add your own custom handlers by implementing the handler
 contracts directly
 
+## Testing
+```bash
+vendor/bin/testbench package:test
+```
