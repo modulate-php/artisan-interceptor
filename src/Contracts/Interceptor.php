@@ -75,9 +75,9 @@ interface Interceptor
      * Add a global input option to the artisan console
      *
      * @param InputOption $option
-     * @return void
+     * @return Interceptor
      */
-    public function addOption(InputOption $option);
+    public function addOption(InputOption $option): Interceptor;
 
     /**
      * @internal Called during the artisan boot process to inject the application into the handler

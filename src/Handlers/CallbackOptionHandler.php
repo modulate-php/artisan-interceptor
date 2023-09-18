@@ -5,8 +5,6 @@ namespace Modulate\Artisan\Interceptor\Handlers;
 use Modulate\Artisan\Interceptor\Contracts\OptionHandler;
 use Modulate\Artisan\Interceptor\InterceptedCommand;
 
-use Symfony\Component\Console\Application;
-
 class CallbackOptionHandler implements OptionHandler
 {
 
@@ -21,29 +19,17 @@ class CallbackOptionHandler implements OptionHandler
     protected $callable;
 
     /**
-     * @var Application
-     */
-    protected $app;
-
-    /**
      *
      * @param string $option
-     * @param callable|null $callable
+     * @param callable $callable
      */
     public function __construct(
         string $option,
-        callable $callable = null,
+        callable $callable,
     ) {
         $this->option   = $option;
         $this->callable = $callable;
     }
-
-    public function setApplication(Application $app): OptionHandler
-    {
-        $this->app = $app;
-        return $this;
-    }
-
 
     public function setOption($option): OptionHandler
     {
@@ -63,7 +49,9 @@ class CallbackOptionHandler implements OptionHandler
     {
         if (
             $intercepted->getInput()->hasOption($this->option)
-            && $intercepted->getInput()->getOption($this->option)
+            // If the option has a value or does not accept a value
+            && ($intercepted->getInput()->getOption($this->option)
+                || !$intercepted->getArtisan()->getDefinition()->getOption($this->option)->acceptValue())
         ) {
             return true;
         }

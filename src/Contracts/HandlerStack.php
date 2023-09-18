@@ -23,9 +23,9 @@ interface HandlerStack
     /**
      * Return the current handler from the stack
      *
-     * @return void
+     * @return Handler|ArtisanHandler|false
      */
-    public function current();
+    public function current(): Handler|ArtisanHandler|bool;
 
     /**
      * Move the pointer to the next handler in the stack

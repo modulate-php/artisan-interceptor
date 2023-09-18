@@ -178,7 +178,7 @@ class Interceptor implements InterceptorContract
     }
 
     /**
-     * Undocumented function
+     * Add options to the interceptor
      *
      * @param InputOption[] $options
      * @return Interceptor
@@ -243,10 +243,17 @@ class Interceptor implements InterceptorContract
         return $this->app;
     }
 
+    /**
+     * Handle a stack
+     *
+     * @param InterceptedCommand|Application $intercepted
+     * @param StackType $stackType
+     * @return void
+     */
     protected function handle(
         InterceptedCommand|Application $intercepted,
         StackType $stackType,
-    ) {
+    ): void {
         $stack = $stackType->value;
         // Move the stack pointer back to the start
         $this->$stack->reset();
@@ -259,21 +266,32 @@ class Interceptor implements InterceptorContract
         if (!$this->$stack->empty()) {
             do {
                 $current = $this->$stack->current();
-                if ($current instanceof OptionHandlerContract) {
-                    if (!$current->check($intercepted)) {
-                        continue;
-                    }
+                // Skip over any handlers where the check returns false
+                if (!$current->check($intercepted)) {
+                    continue;
                 }
                 $current->handle($intercepted);
             } while ($this->$stack->next());
         }
     }
 
+    /**
+     * Handles artisan starting stack
+     *
+     * @param Application $artisan
+     * @return void
+     */
     public function handleStart(Application $artisan): void
     {
         $this->handle($artisan, StackType::start);
     }
 
+    /**
+     * The handleBefore method is called once the CommandStarting event
+     *
+     * @param InterceptedCommand $intercepted
+     * @return void
+     */
     public function handleBefore(InterceptedCommand $intercepted): void
     {
         $this->handle($intercepted, StackType::before);

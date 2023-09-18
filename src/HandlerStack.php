@@ -36,7 +36,7 @@ class HandlerStack implements HandlerStackContract
     /**
      * @inheritDoc
      */
-    public function current(): HandlerContract|bool
+    public function current(): HandlerContract|ArtisanHandler|bool
     {
         return current($this->stack);
     }
